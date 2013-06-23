@@ -15,7 +15,7 @@ import at.wambo.tictactoe.game.ai.AIPlayerRandom
  */
 @RunWith(classOf[JUnitRunner])
 class ActorTest extends FunSuite {
-  val game = new TTTGame('X', 'O', 3)
+  val game = new TTTGame('X', 'O', 12)
   val actor = new AIPlayerRandom('O', game)
 
   test("actor.move") {
@@ -25,6 +25,7 @@ class ActorTest extends FunSuite {
       var count = 0
       while (!success) {
         val actorMove = actor.move
+        assert(actorMove._1 != -1)
         game.move(actorMove._1, actorMove._2, 'O')
         success = game.hasWon('O')
         count += 1
