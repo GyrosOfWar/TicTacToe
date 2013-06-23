@@ -17,11 +17,11 @@ object Main {
 
   def movePlayer(player: Char): (Int, Int) = {
     println("Player " + player + " move: ")
-    println("x = ")
-    val x = readInt()
-    println("y = ")
-    val y = readInt()
-    (x, y)
+    println("Enter your move: x[1-3] y[1-3], e.g. 2 2")
+    val s = readLine()
+    val x = s.substring(0, 1).toInt
+    val y = s.substring(2, 3).toInt
+    (x - 1, y - 1)
   }
 
   def main(args: Array[String]) {
