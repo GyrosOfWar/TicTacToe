@@ -21,10 +21,12 @@ class ActorTest extends FunSuite {
   test("actor.move") {
     val counts = ListBuffer[Int]()
     for (i <- 0 until 100) {
-      var success = actor.move
+      var success = game.hasWon('O')
       var count = 0
       while (!success) {
-        success = actor.move
+        val actorMove = actor.move
+        game.move(actorMove._1, actorMove._2, 'O')
+        success = game.hasWon('O')
         count += 1
       }
       counts.append(count)
