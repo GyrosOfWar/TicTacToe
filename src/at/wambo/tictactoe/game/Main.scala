@@ -1,5 +1,7 @@
 package at.wambo.tictactoe.game
 
+import at.wambo.tictactoe.game.ai.AIPlayerRandom
+
 /**
  * Created with IntelliJ IDEA.
  * User: Martin
@@ -11,7 +13,7 @@ object Main {
   val p1 = 'X'
   val p2 = 'O'
   val game = new TTTGame(p1, p2, 3)
-  val actor = new TTTActor(p2)
+  val actor = new AIPlayerRandom(p2, game)
 
   def movePlayer(player: Char): (Int, Int) = {
     println("Player " + player + " move: ")
@@ -40,7 +42,8 @@ object Main {
         println("You won!")
         return
       }
-      actor.move(game)
+      val actorMove = actor.move
+      game.move(actorMove._1, actorMove._2, p2)
       if (game.hasWon(p2)) {
         println(game)
         println("CPU won!")

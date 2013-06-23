@@ -36,12 +36,16 @@ class TTTGame(val Player1: Char,
   }
 
   def canMove(x: Int, y: Int, symbol: Char): Boolean = {
-    symbol match {
-      case Player1 | Player2
-        if field(x)(y) != symbol &&
-          field(x)(y) != Player1 &&
-          field(x)(y) != Player2 => true
-      case _ => false
+    try {
+      symbol match {
+        case Player1 | Player2
+          if field(x)(y) != symbol &&
+            field(x)(y) != Player1 &&
+            field(x)(y) != Player2 => true
+        case _ => false
+      }
+    } catch {
+      case ex: ArrayIndexOutOfBoundsException => false
     }
   }
 

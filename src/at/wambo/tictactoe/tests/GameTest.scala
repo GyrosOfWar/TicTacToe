@@ -15,14 +15,12 @@ import org.junit.runner.RunWith
 class GameTest extends FunSuite {
   val p1 = 'X'
   val p2 = 'O'
-  val size = 3
+  val size = 12
   val game: TTTGame = new TTTGame(p1, p2, size)
 
   test("game.canMove") {
-    assert(game.canMove(0, 0, p1))
-    assert(!game.canMove(0, 0, p1))
-    assert(!game.canMove(0, 0, p2))
-    assert(game.canMove(1, 1, p1))
+    assert(!game.canMove(-1, 0, p1))
+    assert(game.canMove(1, 0, p2))
   }
 
   test("game.hasWon") {
