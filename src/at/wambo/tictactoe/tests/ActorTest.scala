@@ -18,7 +18,7 @@ class ActorTest extends FunSuite {
   val actor = new TTTActor('O')
 
   test("actor.move") {
-    var counts = ListBuffer[Int]()
+    val counts = ListBuffer[Int]()
     for (i <- 0 until 100) {
       var success = actor.move(game)
       var count = 0
