@@ -20,12 +20,11 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
   private val computer = game.Player2
   private val Empty = ' '
 
-  private def minimax(depth: Int, p: Char): (Int, Int, Int) = {
+  def minimax(depth: Int, p: Char): (Int, Int, Int) = {
     val nextMoves = generateMoves.toList
     var bestScore = if (player == computer) Int.MinValue else Int.MaxValue
     var bestX = -1
     var bestY = -1
-    var currentScore = 0
 
     if (nextMoves.isEmpty || depth == 0)
       bestScore = evaluate
@@ -33,7 +32,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
       for (move <- nextMoves) {
         field(move._1)(move._2) = p
         if (p == computer) {
-          currentScore = minimax(depth - 1, player)._1
+          val currentScore = minimax(depth - 1, player)._1
           if (currentScore > bestScore) {
             bestScore = currentScore
             bestX = move._1
@@ -41,7 +40,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
           }
         }
         else {
-          currentScore = minimax(depth - 1, computer)._1
+          val currentScore = minimax(depth - 1, computer)._1
           if (currentScore < bestScore) {
             bestScore = currentScore
             bestX = move._1
@@ -49,12 +48,13 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
           }
         }
         field(move._1)(move._2) = ' '
+        game.reset()
       }
     }
     (bestScore, bestX, bestY)
   }
 
-  private def evaluateLine(line: String): Int = {
+  def evaluateLine(line: String): Int = {
     var score = 0
 
     if (line(0) == computer) {
@@ -117,7 +117,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
 
   }
 
-  private def evaluate: Int = {
+  def evaluate: Int = {
     var score = 0
     val row1 = field(0).mkString
     val row2 = field(1).mkString
@@ -147,7 +147,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
     str
   }
 
-  private def generateMoves: ListBuffer[(Int, Int)] = {
+  def generateMoves: ListBuffer[(Int, Int)] = {
     val r = ListBuffer[(Int, Int)]()
     if (game.hasWon(player) || game.hasWon(computer))
       return r

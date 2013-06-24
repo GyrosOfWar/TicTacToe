@@ -12,12 +12,12 @@ import at.wambo.tictactoe.game.ai.AIPlayerRandom
 object Main {
   val p1 = 'X'
   val p2 = 'O'
-  val game = new TTTGame(p1, p2, 3)
+  val game = new TTTGame(3)
   val actor = new AIPlayerRandom(p2, game)
 
   def movePlayer(player: Char): (Int, Int) = {
     println("Player " + player + " move: ")
-    println("Enter your move: x[1-3] y[1-3], e.g. 2 2")
+    println("Enter your move: x[1-3] y[1-3], e.g. 3 3")
     val s = readLine()
     val x = s.substring(0, 1).toInt
     val y = s.substring(2, 3).toInt
@@ -42,7 +42,7 @@ object Main {
         println("You won!")
         return
       }
-      val actorMove = actor.move
+      val actorMove = actor.move()
       game.move(actorMove._1, actorMove._2, p2)
       if (game.hasWon(p2)) {
         println(game)

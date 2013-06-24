@@ -7,16 +7,16 @@ package at.wambo.tictactoe.game
  * Time: 23:23
  */
 
-class TTTGame(val Player1: Char,
-              val Player2: Char,
-              val size: Int) {
+class TTTGame(val size: Int) {
+  val Player1 = 'X'
+  val Player2 = 'O'
   val field = Array.fill(size, size)(' ')
 
   def hasWon(player: Char): Boolean = {
     val p = player.toString * size
 
-    val rowWon = makeString(field, "", " ").contains(p)
-    val columnWon = makeString(field.transpose, "", " ").contains(p)
+    val rowWon = Util.makeString(field, "", " ").contains(p)
+    val columnWon = Util.makeString(field.transpose, "", " ").contains(p)
     val diagonal1Won = diagonal(field) == p
     val diagonal2Won = diagonal(field.map(_.reverse)) == p
 
@@ -57,7 +57,5 @@ class TTTGame(val Player1: Char,
     str
   }
 
-  private def makeString(f: Array[Array[Char]], sep1: String, sep2: String) = f.map(c => c.mkString(sep1)).mkString(sep2)
-
-  override def toString = makeString(field, " | ", "\n")
+  override def toString = Util.makeString(field, " | ", "\n")
 }
