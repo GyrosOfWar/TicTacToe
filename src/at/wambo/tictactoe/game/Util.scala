@@ -1,5 +1,7 @@
 package at.wambo.tictactoe.game
 
+import scala.reflect.ClassTag
+
 /**
  * Created with IntelliJ IDEA.
  * User: Martin
@@ -15,5 +17,10 @@ object Util {
       str += f(i)(i).toString
     }
     str
+  }
+
+  def fillArrayRandom[T: ClassTag](size: Int, values: List[T]): Array[Array[T]] = {
+    val s = values.length
+    Array.fill[T](size, size)(values(util.Random.nextInt(s)))
   }
 }

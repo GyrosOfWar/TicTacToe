@@ -4,6 +4,7 @@ import at.wambo.tictactoe.game._
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
+import org.scalatest.BeforeAndAfterEach
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,7 @@ import org.junit.runner.RunWith
  * Time: 17:56
  */
 @RunWith(classOf[JUnitRunner])
-class GameTest extends FunSuite {
+class GameTest extends FunSuite with BeforeAndAfterEach {
   val p1 = PlayerOne
   val p2 = PlayerTwo
   val size = 12
@@ -70,5 +71,19 @@ class GameTest extends FunSuite {
     smallGame.move(0, 1, p1)
     smallGame.move(0, 2, p1)
     assert(Util.makeString(smallGame.field, "", "") == result)
+  }
+
+  test("Util.fillArrayRandom") {
+    val s = Util.fillArrayRandom(2, List('O', 'X', ' '))
+    assert(s.size == 2 && s(0).size == 2 && s(1).size == 2)
+    for (v <- s) {
+      for (i <- v) {
+        assert(i == 'X' || i == 'O' || i == ' ')
+      }
+    }
+  }
+
+  override protected def beforeEach() {
+    game.reset()
   }
 }

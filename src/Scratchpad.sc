@@ -3,8 +3,6 @@ import at.wambo.tictactoe.game.{Util, PlayerTwo, PlayerOne}
 object Scratchpad {
   val human = PlayerOne
   val computer = PlayerTwo
-  val field = Array(Array('X', 'O', ' '), Array('X', 'O', ' '), Array(' ', ' ', 'X'))
-
   var newMethod = false
 
   def evaluateLineNxN(line: String): Int = {
@@ -88,7 +86,7 @@ object Scratchpad {
     score
   }
 
-  def evaluate: Int = {
+  def evaluate(field: Array[Array[Char]]): Int = {
     var score = 0
     val row1 = field(0).mkString
     val row2 = field(1).mkString
@@ -113,7 +111,13 @@ object Scratchpad {
     score
   }
 
-  evaluate
-  newMethod = true
-  evaluate
+  for (i <- 0 until 30) {
+    newMethod = false
+    val o = evaluate(Util.fillArrayRandom(3, List('X', 'O', ' ')))
+    newMethod = true
+    val n = evaluate(Util.fillArrayRandom(3, List('X', 'O', ' ')))
+    println(math.abs(o - n))
+  }
+
+
 }

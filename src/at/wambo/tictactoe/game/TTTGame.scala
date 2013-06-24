@@ -11,14 +11,10 @@ trait Player {
 }
 
 case object PlayerOne extends Player {
-  def apply(): Player = this
-
   val symbol = 'X'
 }
 
 case object PlayerTwo extends Player {
-  def apply(): Player = this
-
   val symbol = 'O'
 }
 
@@ -57,8 +53,8 @@ class TTTGame(val size: Int) {
       player match {
         case Player1 | Player2
           if field(x)(y) != player.symbol &&
-            field(x)(y) != Player1 &&
-            field(x)(y) != Player2 => true
+            field(x)(y) != Player1.symbol &&
+            field(x)(y) != Player2.symbol => true
         case _ => false
       }
     } catch {
