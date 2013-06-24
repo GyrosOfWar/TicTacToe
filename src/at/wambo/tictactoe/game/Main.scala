@@ -10,12 +10,12 @@ import at.wambo.tictactoe.ai.AIPlayerMinimax
  */
 
 object Main {
-  val p1 = 'X'
-  val p2 = 'O'
+  val p1 = PlayerOne
+  val p2 = PlayerTwo
   val game = new TTTGame(3)
-  val actor = new AIPlayerMinimax(p2, game)
+  val actor = new AIPlayerMinimax(game)
 
-  def movePlayer(player: Char): (Int, Int) = {
+  def movePlayer(player: Player): (Int, Int) = {
     println("Player " + player + " move: ")
     println("Enter your move: x[1-3] y[1-3], e.g. 3 3")
     val s = readLine()

@@ -1,6 +1,6 @@
 package at.wambo.tictactoe.ai
 
-import at.wambo.tictactoe.game.TTTGame
+import at.wambo.tictactoe.game.{Player, TTTGame}
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -9,18 +9,18 @@ import scala.collection.mutable.ListBuffer
  * Date: 23.06.13
  * Time: 22:32
  */
-class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
+class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
+  private val field = game.field
+  val player = game.Player1
+  private val computer = game.Player2
+  private val Empty = ' '
+
   def move(): (Int, Int) = {
     val result = minimax(2, player)
     (result._2, result._3)
   }
 
-  private val field = game.field
-  private val player = game.Player1
-  private val computer = game.Player2
-  private val Empty = ' '
-
-  def minimax(depth: Int, p: Char): (Int, Int, Int) = {
+  private def minimax(depth: Int, p: Player): (Int, Int, Int) = {
     val nextMoves = generateMoves.toList
     var bestScore = if (p == computer) Int.MinValue else Int.MaxValue
     var bestX = -1
@@ -30,7 +30,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
       bestScore = evaluate
     else {
       for (move <- nextMoves) {
-        field(move._1)(move._2) = p
+        field(move._1)(move._2) = p.symbol
         if (p == computer) {
           val currentScore = minimax(depth - 1, player)._1
           if (currentScore > bestScore) {
@@ -53,18 +53,18 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
     (bestScore, bestX, bestY)
   }
 
-  def evaluateLine(line: String): Int = {
+  private def evaluateLine(line: String): Int = {
     var score = 0
 
-    if (line(0) == computer) {
+    if (line(0) == computer.symbol) {
       score = 1
     }
-    else if (line(0) == player) {
+    else if (line(0) == player.symbol) {
       score = -1
     }
 
     // Second cell
-    if (line(1) == computer) {
+    if (line(1) == computer.symbol) {
       if (score == 1) {
         // cell1 is mySeed
         score = 10
@@ -75,7 +75,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
         // cell1 is empty
         score = 1
       }
-    } else if (line(1) == player) {
+    } else if (line(1) == player.symbol) {
       if (score == -1) {
         // cell1 is oppSeed
         score = -10
@@ -89,7 +89,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
     }
 
     // Third cell
-    if (line(2) == computer) {
+    if (line(2) == computer.symbol) {
       if (score > 0) {
         // cell1 and/or cell2 is mySeed
         score *= 10
@@ -100,7 +100,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
         // cell1 and cell2 are empty
         score = 1
       }
-    } else if (line(2) == player) {
+    } else if (line(2) == player.symbol) {
       if (score < 0) {
         // cell1 and/or cell2 is oppSeed
         score *= 10
@@ -116,7 +116,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
 
   }
 
-  def evaluate: Int = {
+  private def evaluate: Int = {
     var score = 0
     val row1 = field(0).mkString
     val row2 = field(1).mkString
@@ -146,7 +146,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
     str
   }
 
-  def generateMoves: ListBuffer[(Int, Int)] = {
+  private def generateMoves: ListBuffer[(Int, Int)] = {
     val r = ListBuffer[(Int, Int)]()
     if (game.hasWon(player) || game.hasWon(computer))
       return r

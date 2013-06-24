@@ -9,8 +9,9 @@ import at.wambo.tictactoe.game.TTTGame
  * Date: 23.06.13
  * Time: 20:21
  */
-class AIPlayerRandom(val symbol: Char, val game: TTTGame) extends AIPlayer {
+class AIPlayerRandom(val game: TTTGame) extends AIPlayer {
   private val numAttempts = 30
+  val player = game.Player2
 
   def move(): (Int, Int) = {
     var x = Random.nextInt(game.size)
@@ -20,7 +21,7 @@ class AIPlayerRandom(val symbol: Char, val game: TTTGame) extends AIPlayer {
       count += 1
       x = Random.nextInt(game.size)
       y = Random.nextInt(game.size)
-      if (game.canMove(x, y, symbol)) {
+      if (game.canMove(x, y, player)) {
         return (x, y)
       }
     }

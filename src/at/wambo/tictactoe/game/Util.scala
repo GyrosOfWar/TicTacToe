@@ -9,4 +9,11 @@ package at.wambo.tictactoe.game
 object Util {
   def makeString[T](f: Array[Array[T]], sep1: String, sep2: String) = f.map(c => c.mkString(sep1)).mkString(sep2)
 
+  def diagonal[T](f: Array[Array[T]]): String = {
+    var str = ""
+    for (i <- 0 until f.size) {
+      str += f(i)(i).toString
+    }
+    str
+  }
 }

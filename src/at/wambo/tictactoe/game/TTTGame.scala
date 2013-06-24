@@ -6,19 +6,30 @@ package at.wambo.tictactoe.game
  * Date: 22.06.13
  * Time: 23:23
  */
+trait Player {
+  val symbol: Char
+}
+
+case object PlayerOne extends Player {
+  val symbol = 'X'
+}
+
+case object PlayerTwo extends Player {
+  val symbol = 'O'
+}
 
 class TTTGame(val size: Int) {
-  val Player1 = 'X'
-  val Player2 = 'O'
+  val Player1 = PlayerOne
+  val Player2 = PlayerTwo
   val field = Array.fill(size, size)(' ')
 
-  def hasWon(player: Char): Boolean = {
-    val p = player.toString * size
+  def hasWon(player: Player): Boolean = {
+    val p = player.symbol.toString * size
 
     val rowWon = Util.makeString(field, "", " ").contains(p)
     val columnWon = Util.makeString(field.transpose, "", " ").contains(p)
-    val diagonal1Won = diagonal(field) == p
-    val diagonal2Won = diagonal(field.map(_.reverse)) == p
+    val diagonal1Won = Util.diagonal(field) == p
+    val diagonal2Won = Util.diagonal(field.map(_.reverse)) == p
 
     rowWon || columnWon || diagonal1Won || diagonal2Won
   }
@@ -31,15 +42,15 @@ class TTTGame(val size: Int) {
     }
   }
 
-  def move(x: Int, y: Int, symbol: Char) {
-    field(x)(y) = symbol
+  def move(x: Int, y: Int, player: Player) {
+    field(x)(y) = player.symbol
   }
 
-  def canMove(x: Int, y: Int, symbol: Char): Boolean = {
+  def canMove(x: Int, y: Int, player: Player): Boolean = {
     try {
-      symbol match {
+      player match {
         case Player1 | Player2
-          if field(x)(y) != symbol &&
+          if field(x)(y) != player.symbol &&
             field(x)(y) != Player1 &&
             field(x)(y) != Player2 => true
         case _ => false
@@ -47,14 +58,6 @@ class TTTGame(val size: Int) {
     } catch {
       case ex: ArrayIndexOutOfBoundsException => false
     }
-  }
-
-  private def diagonal[T](f: Array[Array[T]]): String = {
-    var str = ""
-    for (i <- 0 until size) {
-      str += f(i)(i).toString
-    }
-    str
   }
 
   override def toString = Util.makeString(field, " | ", "\n")

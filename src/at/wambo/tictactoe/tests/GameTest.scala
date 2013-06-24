@@ -13,8 +13,8 @@ import org.junit.runner.RunWith
  */
 @RunWith(classOf[JUnitRunner])
 class GameTest extends FunSuite {
-  val p1 = 'X'
-  val p2 = 'O'
+  val p1 = PlayerOne
+  val p2 = PlayerTwo
   val size = 12
   val game: TTTGame = new TTTGame(size)
 

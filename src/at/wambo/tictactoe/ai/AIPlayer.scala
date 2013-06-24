@@ -1,6 +1,6 @@
 package at.wambo.tictactoe.ai
 
-import at.wambo.tictactoe.game.TTTGame
+import at.wambo.tictactoe.game.{Player, TTTGame}
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,9 +14,9 @@ trait AIPlayer {
    */
   val game: TTTGame
   /**
-   * The player's symbol, will be 'O' most of the time
+   * The player object
    */
-  val symbol: Char
+  val player: Player
 
   /**
    * Does one Tic-Tac-Toe move from the AI player.
