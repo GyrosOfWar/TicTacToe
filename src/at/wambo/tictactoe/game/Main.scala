@@ -1,6 +1,6 @@
 package at.wambo.tictactoe.game
 
-import at.wambo.tictactoe.game.ai.AIPlayerMinimax
+import at.wambo.tictactoe.ai.AIPlayerMinimax
 
 /**
  * Created with IntelliJ IDEA.
