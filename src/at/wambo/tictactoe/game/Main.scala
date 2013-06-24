@@ -1,6 +1,6 @@
 package at.wambo.tictactoe.game
 
-import at.wambo.tictactoe.game.ai.AIPlayerRandom
+import at.wambo.tictactoe.game.ai.AIPlayerMinimax
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +13,7 @@ object Main {
   val p1 = 'X'
   val p2 = 'O'
   val game = new TTTGame(3)
-  val actor = new AIPlayerRandom(p2, game)
+  val actor = new AIPlayerMinimax(p2, game)
 
   def movePlayer(player: Char): (Int, Int) = {
     println("Player " + player + " move: ")

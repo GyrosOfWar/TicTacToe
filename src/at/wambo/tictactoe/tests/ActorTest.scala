@@ -71,15 +71,15 @@ class ActorTest extends FunSuite with BeforeAndAfterEach {
   test("minimax.minimax()") {
     println("mine:")
     game.move(0, 1, 'X')
-    println(minimax.minimax(2, 'O'))
+    println(minimax.minimax(2, 'X'))
   }
 
-  test("refMinimax.mimimax()") {
-    println("ref")
-    game.move(0, 1, 'X')
-    val result = refMinimax.minimax(2, 'O')
-    println("(" + result(0) + ", " + result(1) + ", " + result(2) + ")")
-  }
+  //  test("refMinimax.mimimax()") {
+  //    println("ref")
+  //    game.move(0, 1, 'X')
+  //    val result = refMinimax.minimax(2, 'O')
+  //    println("(" + result(0) + ", " + result(1) + ", " + result(2) + ")")
+  //  }
 
   override protected def beforeEach() {
     game.reset()

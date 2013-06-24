@@ -22,7 +22,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
 
   def minimax(depth: Int, p: Char): (Int, Int, Int) = {
     val nextMoves = generateMoves.toList
-    var bestScore = if (player == computer) Int.MinValue else Int.MaxValue
+    var bestScore = if (p == computer) Int.MinValue else Int.MaxValue
     var bestX = -1
     var bestY = -1
 
@@ -47,8 +47,7 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
             bestY = move._2
           }
         }
-        field(move._1)(move._2) = ' '
-        game.reset()
+        field(move._1)(move._2) = Empty
       }
     }
     (bestScore, bestX, bestY)

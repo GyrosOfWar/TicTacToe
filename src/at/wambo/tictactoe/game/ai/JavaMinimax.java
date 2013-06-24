@@ -59,9 +59,9 @@ public class JavaMinimax {
             for (int[] move : nextMoves) {
                 // Try this move for the current "player"
                 cells[move[0]][move[1]] = player;
-                //System.out.println(Util.makeString(cells, " | ", "\n"));
+                printCells();
                 if (player == computer) {  // computer (computer) is maximizing player
-                    currentScore = minimax(depth - 1, player)[0];
+                    currentScore = minimax(depth - 1, this.player)[0];
                     if (currentScore > bestScore) {
                         bestScore = currentScore;
                         bestRow = move[0];
@@ -80,6 +80,15 @@ public class JavaMinimax {
             }
         }
         return new int[]{bestScore, bestRow, bestCol};
+    }
+
+    private void printCells() {
+        for (char[] row : cells) {
+            for (char c : row) {
+                System.out.println(" | " + c + " | ");
+            }
+            System.out.println("\n");
+        }
     }
 
     /**
