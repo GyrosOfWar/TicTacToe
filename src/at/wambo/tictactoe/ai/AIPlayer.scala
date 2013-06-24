@@ -1,4 +1,4 @@
-package at.wambo.tictactoe.game.ai
+package at.wambo.tictactoe.ai
 
 import at.wambo.tictactoe.game.TTTGame
 
