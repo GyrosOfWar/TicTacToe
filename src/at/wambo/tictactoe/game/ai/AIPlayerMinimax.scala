@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
  * Time: 22:32
  */
 class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
-  def move: (Int, Int) = {
+  def move(): (Int, Int) = {
     val result = minimax(2, player)
     (result._2, result._3)
   }
@@ -48,35 +48,73 @@ class AIPlayerMinimax(val symbol: Char, val game: TTTGame) extends AIPlayer {
             bestY = move._2
           }
         }
+        field(move._1)(move._2) = ' '
       }
-      field(move._1)(move._2) = ' '
     }
     (bestScore, bestX, bestY)
   }
 
   private def evaluateLine(line: String): Int = {
-    def matchLine(P: Char): Int = {
-      var score = 0
-      line match {
-        case xs :: P :: P => score += 100
-        case P :: xs :: P => score += 100
-        case P :: P :: xs => score += 100
+    var score = 0
 
-        case Empty :: P :: xs => score += 10
-        case P :: Empty :: xs => score += 10
-        case P :: xs :: Empty => score += 10
-        case xs :: P :: Empty => score += 10
-
-        case Empty :: Empty :: P => score += 1
-        case Empty :: P :: Empty => score += 1
-        case P :: Empty :: Empty => score += 1
-
-        case _ => score = 0
-      }
-      println(score)
-      score
+    if (line(0) == computer) {
+      score = 1
     }
-    matchLine(player) * -1 + matchLine(computer)
+    else if (line(0) == player) {
+      score = -1
+    }
+
+    // Second cell
+    if (line(1) == computer) {
+      if (score == 1) {
+        // cell1 is mySeed
+        score = 10
+      } else if (score == -1) {
+        // cell1 is oppSeed
+        return 0
+      } else {
+        // cell1 is empty
+        score = 1
+      }
+    } else if (line(1) == player) {
+      if (score == -1) {
+        // cell1 is oppSeed
+        score = -10
+      } else if (score == 1) {
+        // cell1 is mySeed
+        return 0
+      } else {
+        // cell1 is empty
+        score = -1
+      }
+    }
+
+    // Third cell
+    if (line(2) == computer) {
+      if (score > 0) {
+        // cell1 and/or cell2 is mySeed
+        score *= 10
+      } else if (score < 0) {
+        // cell1 and/or cell2 is oppSeed
+        return 0
+      } else {
+        // cell1 and cell2 are empty
+        score = 1
+      }
+    } else if (line(2) == player) {
+      if (score < 0) {
+        // cell1 and/or cell2 is oppSeed
+        score *= 10
+      } else if (score > 1) {
+        // cell1 and/or cell2 is mySeed
+        return 0
+      } else {
+        // cell1 and cell2 are empty
+        score = -1
+      }
+    }
+    score
+
   }
 
   private def evaluate: Int = {

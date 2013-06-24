@@ -12,7 +12,7 @@ import at.wambo.tictactoe.game.TTTGame
 class AIPlayerRandom(val symbol: Char, val game: TTTGame) extends AIPlayer {
   private val numAttempts = 30
 
-  def move: (Int, Int) = {
+  def move(): (Int, Int) = {
     var x = Random.nextInt(game.size)
     var y = Random.nextInt(game.size)
     var count = 0

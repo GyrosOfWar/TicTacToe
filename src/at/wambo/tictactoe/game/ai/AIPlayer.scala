@@ -12,5 +12,5 @@ trait AIPlayer {
   val game: TTTGame
   val symbol: Char
 
-  def move: (Int, Int)
+  def move(): (Int, Int)
 }
