@@ -42,6 +42,8 @@ class TTTGame(val size: Int) {
     }
   }
 
+  def isTie: Boolean = ???
+
   def move(x: Int, y: Int, player: Player) {
     field(x)(y) = player.symbol
   }

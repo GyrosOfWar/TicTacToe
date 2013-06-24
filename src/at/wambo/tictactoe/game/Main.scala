@@ -12,7 +12,7 @@ import at.wambo.tictactoe.ai.AIPlayerMinimax
 object Main {
   val p1 = PlayerOne
   val p2 = PlayerTwo
-  val game = new TTTGame(3)
+  val game = new TTTGame(5)
   val actor = new AIPlayerMinimax(game)
 
   def movePlayer(player: Player): (Int, Int) = {

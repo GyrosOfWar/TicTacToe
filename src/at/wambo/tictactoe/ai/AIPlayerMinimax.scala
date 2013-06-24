@@ -113,7 +113,6 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
       }
     }
     score
-
   }
 
   private def evaluate: Int = {
