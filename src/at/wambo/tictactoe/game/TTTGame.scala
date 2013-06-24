@@ -11,10 +11,14 @@ trait Player {
 }
 
 case object PlayerOne extends Player {
+  def apply(): Player = this
+
   val symbol = 'X'
 }
 
 case object PlayerTwo extends Player {
+  def apply(): Player = this
+
   val symbol = 'O'
 }
 

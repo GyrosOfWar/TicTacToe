@@ -22,5 +22,5 @@ trait AIPlayer {
    * Does one Tic-Tac-Toe move from the AI player.
    * @return The next position the AI player wants to move to.
    */
-  def move(): (Int, Int)
+  def move(): Option[(Int, Int)]
 }

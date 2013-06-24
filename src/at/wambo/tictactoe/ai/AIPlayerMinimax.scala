@@ -1,6 +1,6 @@
 package at.wambo.tictactoe.ai
 
-import at.wambo.tictactoe.game.{Player, TTTGame}
+import at.wambo.tictactoe.game.{PlayerOne, Player, TTTGame}
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -11,13 +11,16 @@ import scala.collection.mutable.ListBuffer
  */
 class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
   private val field = game.field
-  val player = game.Player1
+  val player: Player = PlayerOne
+  var UseNewEvaluationStrategy = false
+  private val human = game.Player1
   private val computer = game.Player2
   private val Empty = ' '
 
-  def move(): (Int, Int) = {
-    val result = minimax(2, player)
-    (result._2, result._3)
+  def move(): Option[(Int, Int)] = {
+    val result = minimax(2, human)
+    if (result._2 != -1 && result._3 != -1) Some(result._2, result._3)
+    else None
   }
 
   private def minimax(depth: Int, p: Player): (Int, Int, Int) = {
@@ -32,7 +35,7 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
       for (move <- nextMoves) {
         field(move._1)(move._2) = p.symbol
         if (p == computer) {
-          val currentScore = minimax(depth - 1, player)._1
+          val currentScore = minimax(depth - 1, human)._1
           if (currentScore > bestScore) {
             bestScore = currentScore
             bestX = move._1
@@ -59,7 +62,7 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
     if (line(0) == computer.symbol) {
       score = 1
     }
-    else if (line(0) == player.symbol) {
+    else if (line(0) == human.symbol) {
       score = -1
     }
 
@@ -75,7 +78,7 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
         // cell1 is empty
         score = 1
       }
-    } else if (line(1) == player.symbol) {
+    } else if (line(1) == human.symbol) {
       if (score == -1) {
         // cell1 is oppSeed
         score = -10
@@ -100,7 +103,7 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
         // cell1 and cell2 are empty
         score = 1
       }
-    } else if (line(2) == player.symbol) {
+    } else if (line(2) == human.symbol) {
       if (score < 0) {
         // cell1 and/or cell2 is oppSeed
         score *= 10
@@ -113,6 +116,20 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
       }
     }
     score
+  }
+
+  private def evaluateLineNxN(line: String): Int = {
+    val length = line.length
+    // Count occurrences of player and computer symbol in the line
+    val p = line.count(_ == computer.symbol)
+    val q = line.count(_ == human.symbol)
+    if (p > 0 && q > 0 || p == 0 && q == 0)
+      0
+    else {
+      val r = if (p > q) p else -q
+      val ratio = r / length.asInstanceOf[Double]
+      math.pow(10, ratio * 5).asInstanceOf[Int]
+    }
   }
 
   private def evaluate: Int = {
@@ -131,8 +148,14 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
     val diag2 = diagonal(field.map(c => c.reverse))
 
     val all = List(row1, row2, row3, col1, col2, col3, diag1, diag2)
-    for (v <- all)
-      score += evaluateLine(v)
+    for (v <- all) {
+      if (UseNewEvaluationStrategy) {
+        score += evaluateLineNxN(v)
+      }
+      else {
+        score += evaluateLine(v)
+      }
+    }
 
     score
   }
@@ -147,7 +170,7 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
 
   private def generateMoves: ListBuffer[(Int, Int)] = {
     val r = ListBuffer[(Int, Int)]()
-    if (game.hasWon(player) || game.hasWon(computer))
+    if (game.hasWon(human) || game.hasWon(computer))
       return r
 
     for (i <- 0 until game.size) {

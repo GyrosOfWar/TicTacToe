@@ -13,7 +13,7 @@ class AIPlayerRandom(val game: TTTGame) extends AIPlayer {
   private val numAttempts = 30
   val player = game.Player2
 
-  def move(): (Int, Int) = {
+  def move(): Option[(Int, Int)] = {
     var x = Random.nextInt(game.size)
     var y = Random.nextInt(game.size)
     var count = 0
@@ -22,9 +22,9 @@ class AIPlayerRandom(val game: TTTGame) extends AIPlayer {
       x = Random.nextInt(game.size)
       y = Random.nextInt(game.size)
       if (game.canMove(x, y, player)) {
-        return (x, y)
+        return Some(x, y)
       }
     }
-    (-1, -1)
+    None
   }
 }
