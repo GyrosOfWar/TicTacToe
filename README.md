@@ -7,5 +7,7 @@ Roadmap:
 
 Support for arbitrarily-sized games
 
-
 Support for AI vs player, player vs player and AI vs AI (different heuristics? user-defined heuristics?)
+
+* Add a sbt build script 
+* Add ScalaMeter
