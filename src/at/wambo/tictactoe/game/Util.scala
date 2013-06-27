@@ -20,7 +20,6 @@ object Util {
   }
 
   def fillArrayRandom[T: ClassTag](size: Int, values: List[T]): Array[Array[T]] = {
-    val s = values.length
-    Array.fill[T](size, size)(values(util.Random.nextInt(s)))
+    Array.fill[T](size, size)(values(util.Random.nextInt(values.length)))
   }
 }

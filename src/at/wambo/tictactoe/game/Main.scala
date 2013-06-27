@@ -28,6 +28,7 @@ object Main {
 
   def doOneGame(): (Int, Int) = {
     while (!game.hasWon(p1) && !game.hasWon(p2)) {
+      //println(game + "\n")
       val actor1Move = actor1.move()
       if (actor1Move.isDefined) {
         val x = actor1Move.get._1
