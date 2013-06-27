@@ -1,3 +1,0 @@
-A simple Scala implementation of an arbitrary-sized Tic Tac Toe game. 
-
-Requires ScalaTest and JUnit for the tests.
