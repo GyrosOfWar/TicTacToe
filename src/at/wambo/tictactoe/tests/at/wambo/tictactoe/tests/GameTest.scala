@@ -83,6 +83,11 @@ class GameTest extends FunSuite with BeforeAndAfterEach {
     }
   }
 
+  test("Util.diagonal") {
+    val arr = Array(Array('T', ' ', ' '), Array(' ', 'T', ' '), Array(' ', ' ', 'T'))
+    assert(Util.diagonal(arr) == "TTT")
+  }
+
   override protected def beforeEach() {
     game.reset()
   }

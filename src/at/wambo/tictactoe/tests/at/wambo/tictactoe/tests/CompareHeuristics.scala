@@ -107,7 +107,7 @@ object CompareHeuristics {
     val col3 = fieldT(2).mkString
 
     val diag1 = Util.diagonal(field)
-    val diag2 = Util.diagonal(field.map(c => c.reverse))
+    val diag2 = Util.diagonal(field.map(_.reverse))
 
     val all = List(row1, row2, row3, col1, col2, col3, diag1, diag2)
     for (v <- all) {
