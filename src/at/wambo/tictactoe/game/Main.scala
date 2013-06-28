@@ -10,66 +10,61 @@ import at.wambo.tictactoe.ai.AIPlayerMinimax
  */
 
 object Main {
+  val size = 3
   val p1 = PlayerOne
   val p2 = PlayerTwo
-  val game = new TTTGame(7)
-  val actor1 = new AIPlayerMinimax(game)
-  val actor2 = new AIPlayerMinimax(game)
-  actor2.UseNewEvaluationStrategy = true
+  val game = new TTTGame(size)
+  val actor = new AIPlayerMinimax(game)
 
   def movePlayer(player: Player): (Int, Int) = {
     println("Player " + player + " move: ")
-    println("Enter your move: x[1-3] y[1-3], e.g. 3 3")
+    println("Enter your move: x[1-" + size + "] y[1-" + size + "], e.g. 3 3")
     val s = readLine()
     val x = s.substring(0, 1).toInt
     val y = s.substring(2, 3).toInt
     (x - 1, y - 1)
   }
 
-  def doOneGame(): (Int, Int) = {
+  def gameLoop() {
     while (!game.hasWon(p1) && !game.hasWon(p2)) {
-      //println(game + "\n")
-      val actor1Move = actor1.move()
-      if (actor1Move.isDefined) {
-        val x = actor1Move.get._1
-        val y = actor1Move.get._2
-        game.move(x, y, p1)
-      } else {
-        return (1, 0)
+      var tuple = movePlayer(p1)
+      var x = tuple._1
+      var y = tuple._2
+      var success = game.canMove(x, y, p1)
+      while (!success) {
+        tuple = movePlayer(p1)
+        x = tuple._1
+        y = tuple._2
+        success = game.canMove(x, y, p1)
       }
-
+      game.move(x, y, p1)
       if (game.hasWon(p1)) {
-        return (1, 0)
+        println(game)
+        println("You won!")
+        return
       }
-
-      val actor2Move = actor2.move()
-      if (actor2Move.isDefined) {
-        val x = actor2Move.get._1
-        val y = actor2Move.get._2
-        game.move(x, y, p2)
-      } else {
-        return (1, 0)
+      var actorMove = (0, 0)
+      actor.move() match {
+        case None => println("Tie!"); return
+        case Some(move) => actorMove = move
       }
-
+      game.move(actorMove._1, actorMove._2, p2)
       if (game.hasWon(p2)) {
-        return (0, 1)
+        println(game)
+        println("CPU won!")
+        return
       }
+      println(game + "\n")
     }
-    (-100, -100)
   }
 
   def main(args: Array[String]) {
-    var actor1Won = 0
-    var actor2Won = 0
-    var result = (0, 0)
-    for (i <- 0 until 20) {
-      game.reset()
-      result = doOneGame()
-      actor1Won += result._1
-      actor2Won += result._2
+    gameLoop()
+    while (true) {
+      println("Play another game? (y/n)")
+      val yesNo = readLine()
+      if (yesNo(0) == 'y') gameLoop()
+      else return
     }
-
-    println("a1: " + actor1Won)
-    println("a2: " + actor2Won)
   }
 }

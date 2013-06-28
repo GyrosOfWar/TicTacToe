@@ -11,7 +11,6 @@ import at.wambo.tictactoe.game.{Util, PlayerTwo, PlayerOne}
 object CompareHeuristics {
   val human = PlayerOne
   val computer = PlayerTwo
-  var useNewHeuristic = false
 
   def newHeuristic(line: String): Int = {
     val length = line.length
@@ -94,7 +93,7 @@ object CompareHeuristics {
     score
   }
 
-  def evaluate(field: Array[Array[Char]]): Int = {
+  def evaluate(field: Array[Array[Char]], heuristic: String => Int): Int = {
     var score = 0
     val row1 = field(0).mkString
     val row2 = field(1).mkString
@@ -111,24 +110,19 @@ object CompareHeuristics {
 
     val all = List(row1, row2, row3, col1, col2, col3, diag1, diag2)
     for (v <- all) {
-      if (useNewHeuristic)
-        score += newHeuristic(v)
-      else
-        score += oldHeuristic(v)
+      score += heuristic(v)
     }
     score
   }
 
   def main(args: Array[String]) {
     for (i <- 0 until 30) {
-      val rdm = Util.fillArrayRandom(3, List('X', 'O', ' ', ' ', ' ', ' ', ' ', ' '))
-      useNewHeuristic = false
-      val o = evaluate(rdm)
-      useNewHeuristic = true
-      val n = evaluate(rdm)
+      val rdm = Util.fillArrayRandom(3, List('X', 'O', ' ', ' ', ' '))
+      val o = evaluate(rdm, oldHeuristic)
+      val n = evaluate(rdm, newHeuristic)
       println("old: " + o)
       println("new: " + n)
-      println
+      println()
     }
   }
 }
