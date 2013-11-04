@@ -19,8 +19,8 @@ case object PlayerTwo extends Player {
 }
 
 class TTTGame(val size: Int) {
-  val Player1 = PlayerOne
-  val Player2 = PlayerTwo
+  val Player1: Player = PlayerOne
+  val Player2: Player = PlayerTwo
   val field = Array.fill(size, size)(' ')
 
   def hasWon(player: Player): Boolean = {

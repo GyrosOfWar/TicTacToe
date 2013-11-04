@@ -127,8 +127,8 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
       0
     else {
       val r = if (p > q) p else -q
-      val ratio = r / length.asInstanceOf[Double]
-      math.pow(10, ratio * 5).asInstanceOf[Int]
+      val ratio = r / length.toDouble
+      math.pow(10, ratio * 5).toInt
     }
   }
 

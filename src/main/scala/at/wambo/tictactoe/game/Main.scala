@@ -62,8 +62,7 @@ object Main {
     gameLoop()
     while (true) {
       println("Play another game? (y/n)")
-      val yesNo = readLine()
-      if (yesNo(0) == 'y') gameLoop()
+      if (readLine()(0) == 'y') gameLoop()
       else return
     }
   }
