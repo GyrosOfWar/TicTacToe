@@ -74,6 +74,6 @@ object CompareActors {
     }
     println("old AI won: " + oldWon)
     println("new AI won: " + newWon)
-    Util.printStats("move")
+//    Util.printStats("move")
   }
 }

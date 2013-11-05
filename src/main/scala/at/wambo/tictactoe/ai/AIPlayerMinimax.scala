@@ -18,11 +18,10 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
   private val Empty = ' '
 
   def move(): Option[(Int, Int)] = {
-    Util.timedCall("move") {
-      val result = minimax(2, human)
-      if (result._2 != -1 && result._3 != -1) Some(result._2, result._3)
-      else None
-    }
+    val result = minimax(2, human)
+    if (result._2 != -1 && result._3 != -1) Some(result._2, result._3)
+    else None
+
   }
 
   private def minimax(depth: Int, p: Player): (Int, Int, Int) = {
