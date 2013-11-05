@@ -1,6 +1,6 @@
 package at.wambo.tictactoe.ai
 
-import at.wambo.tictactoe.game.{PlayerOne, Player, TTTGame}
+import at.wambo.tictactoe.game.{Util, PlayerOne, Player, TTTGame}
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -18,9 +18,11 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
   private val Empty = ' '
 
   def move(): Option[(Int, Int)] = {
-    val result = minimax(2, human)
-    if (result._2 != -1 && result._3 != -1) Some(result._2, result._3)
-    else None
+    Util.timedCall("move") {
+      val result = minimax(2, human)
+      if (result._2 != -1 && result._3 != -1) Some(result._2, result._3)
+      else None
+    }
   }
 
   private def minimax(depth: Int, p: Player): (Int, Int, Int) = {
@@ -133,39 +135,20 @@ class AIPlayerMinimax(val game: TTTGame) extends AIPlayer {
   }
 
   private def evaluate: Int = {
-    var score = 0
-    val row1 = field(0).mkString
-    val row2 = field(1).mkString
-    val row3 = field(2).mkString
+    val rows = (for (l <- field) yield l.mkString).toVector
+    val cols = (for (l <- field.transpose) yield l.mkString).toVector
 
-    val fieldT = field.transpose
+    val diag1 = Util.diagonal(field)
+    val diag2 = Util.diagonal(field.map(c => c.reverse))
 
-    val col1 = fieldT(0).mkString
-    val col2 = fieldT(1).mkString
-    val col3 = fieldT(2).mkString
+    val all: Vector[String] = rows ++ cols :+ diag1 :+ diag2
 
-    val diag1 = diagonal(field)
-    val diag2 = diagonal(field.map(c => c.reverse))
-
-    val all = List(row1, row2, row3, col1, col2, col3, diag1, diag2)
-    for (v <- all) {
-      if (UseNewEvaluationStrategy) {
-        score += evaluateLineNxN(v)
-      }
-      else {
-        score += evaluateLine(v)
-      }
+    if (UseNewEvaluationStrategy) {
+      (for (v <- all) yield evaluateLineNxN(v)).sum
     }
-
-    score
-  }
-
-  private def diagonal[T](f: Array[Array[T]]): String = {
-    var str = ""
-    for (i <- 0 until f.size) {
-      str += f(i)(i).toString
+    else {
+      (for (v <- all) yield evaluateLine(v)).sum
     }
-    str
   }
 
   private def generateMoves: ListBuffer[(Int, Int)] = {

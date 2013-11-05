@@ -60,6 +60,8 @@ object Main {
 
   def main(args: Array[String]) {
     gameLoop()
+
+    Util.printStats("hasWon")
     while (true) {
       println("Play another game? (y/n)")
       if (readLine()(0) == 'y') gameLoop()

@@ -1,7 +1,7 @@
-package at.wambo.tictactoe.tests
+package at.wambo.tictactoe.ai
 
-import at.wambo.tictactoe.ai.AIPlayerMinimax
-import at.wambo.tictactoe.game.{PlayerTwo, Player, PlayerOne, TTTGame}
+import at.wambo.tictactoe.game._
+import scala.Some
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,41 +30,38 @@ object CompareActors {
   }
 
   def playAIvsAI(): (Int, Int) = {
+    val PlayerOneWon = (1, 0)
+    val PlayerTwoWon = (0, 1)
     def doOneGame(): (Int, Int) = {
       while (!game.hasWon(PlayerOne) && !game.hasWon(PlayerTwo)) {
         val actor1Move = oldActor.move()
-        if (actor1Move.isDefined) {
-          val (x, y) = actor1Move.get
-          game.move(x, y, PlayerOne)
-        } else {
-          return (1, 0)
+
+        actor1Move match {
+          case Some(move) => game.move(move._1, move._2, PlayerOne)
+          case None => return PlayerOneWon
         }
 
         if (game.hasWon(PlayerOne)) {
-          return (1, 0)
+          return PlayerOneWon
         }
 
-        val actor2Move = newActor.move()
-        if (actor2Move.isDefined) {
-          val (x, y) = actor2Move.get
-          game.move(x, y, PlayerTwo)
-        } else {
-          return (1, 0)
+        newActor.move() match {
+          case Some(move) => game.move(move._1, move._2, PlayerTwo)
+          case None => return PlayerTwoWon
         }
 
         if (game.hasWon(PlayerTwo)) {
-          return (0, 1)
+          return PlayerTwoWon
         }
       }
-      (-100, -100)
+      (0, 0)
     }
-
     doOneGame()
   }
 
   def main(args: Array[String]) {
     var (oldWon, newWon) = playAIvsAI()
-    for (k <- 3 to 7) {
+    for (k <- 3 to 4) {
       for (i <- 0 until 2) {
         doRandomMoves(k / 2)
         val result = playAIvsAI()
@@ -77,5 +74,6 @@ object CompareActors {
     }
     println("old AI won: " + oldWon)
     println("new AI won: " + newWon)
+    Util.printStats("move")
   }
 }

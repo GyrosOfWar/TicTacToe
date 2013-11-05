@@ -1,4 +1,4 @@
-package at.wambo.tictactoe.tests
+package at.wambo.tictactoe.ai
 
 import at.wambo.tictactoe.game.{Util, PlayerTwo, PlayerOne}
 

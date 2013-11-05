@@ -23,15 +23,18 @@ class TTTGame(val size: Int) {
   val Player2: Player = PlayerTwo
   val field = Array.fill(size, size)(' ')
 
+
   def hasWon(player: Player): Boolean = {
-    val p = player.symbol.toString * size
+    Util.timedCall("hasWon", printTime = false) {
+      val p = player.symbol.toString * size
 
-    val rowWon = Util.makeString(field, "", " ") contains p
-    val columnWon = Util.makeString(field.transpose, "", " ") contains p
-    val diagonal1Won = Util.diagonal(field) == p
-    val diagonal2Won = Util.diagonal(field.map(_.reverse)) == p
+      val rowWon = Util.makeString(field, "", " ") contains p
+      val columnWon = Util.makeString(field.transpose, "", " ") contains p
+      val diagonal1Won = Util.diagonal(field) == p
+      val diagonal2Won = Util.diagonal(field.map(_.reverse)) == p
 
-    rowWon || columnWon || diagonal1Won || diagonal2Won
+      rowWon || columnWon || diagonal1Won || diagonal2Won
+    }
   }
 
   def reset() {
