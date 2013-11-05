@@ -22,8 +22,8 @@ object CompareHeuristics {
     else {
       val computerGreater = p > q
       val r = math.max(p, q)
-      val ratio = r / length.asInstanceOf[Double]
-      val result = math.pow(4, ratio * 5).asInstanceOf[Int]
+      val ratio = r / length.toDouble
+      val result = math.pow(4, ratio * 5).toInt
       if (computerGreater)
         result
       else
@@ -94,25 +94,14 @@ object CompareHeuristics {
   }
 
   def evaluate(field: Array[Array[Char]], heuristic: String => Int): Int = {
-    var score = 0
-    val row1 = field(0).mkString
-    val row2 = field(1).mkString
-    val row3 = field(2).mkString
-
-    val fieldT = field.transpose
-
-    val col1 = fieldT(0).mkString
-    val col2 = fieldT(1).mkString
-    val col3 = fieldT(2).mkString
+    val rows = (for (s <- field) yield s.mkString).toVector
+    val cols = (for (s <- field.transpose) yield s.mkString).toVector
 
     val diag1 = Util.diagonal(field)
     val diag2 = Util.diagonal(field.map(_.reverse))
 
-    val all = List(row1, row2, row3, col1, col2, col3, diag1, diag2)
-    for (v <- all) {
-      score += heuristic(v)
-    }
-    score
+    val all = rows ++ cols :+ diag1 :+ diag2
+    (for(str <- all) yield heuristic(str)).sum
   }
 
   def main(args: Array[String]) {
